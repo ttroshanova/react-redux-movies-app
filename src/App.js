@@ -1,23 +1,30 @@
-import logo from './logo.svg';
-import './App.css';
+import './App.scss';
+import { useState } from 'react';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import Home from './features/Home'
+import Header from './features/Header'
+import Footer from './features/Footer'
+import SignIn from './features/SignIn';
+import MovieDetails from './features/MovieDetails'
 
 function App() {
+  const [navbarActive, setNavbarActive] = useState(false);
+
+  const handleMenuBar = () => {
+    setNavbarActive(!navbarActive)
+  }
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div className='app' >
+      <Router>
+        <Header handleMenuBar={handleMenuBar} navbarActive={navbarActive}/>
+        <Routes>
+          <Route path='/' element={<Home navbarActive={navbarActive}/>}/>
+          <Route path='/movie/:imdbID' element={<MovieDetails/>}/>
+          <Route path='signin' element={<SignIn handleMenuBar={handleMenuBar} navbarActive={navbarActive}/>}/>
+        </Routes>
+        <Footer/>
+      </Router>
     </div>
   );
 }
